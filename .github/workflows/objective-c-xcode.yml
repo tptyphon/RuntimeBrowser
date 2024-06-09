@@ -15,7 +15,6 @@ jobs:
     - name: xcode-build-github-action
       uses: akiojin/xcode-build-github-action@v1.0
       with:
-        project: ./iOS/OCRuntime.xcodeproj/project.pbxproj
         export-method: development # optional, default is development
         output-directory: .
         team-id: PG2KAM3LR7
