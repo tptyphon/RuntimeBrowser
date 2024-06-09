@@ -16,6 +16,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Set Default Scheme
         run: |
+          cd iOS
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
           default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
           echo $default | cat >default
@@ -28,10 +29,12 @@ jobs:
           if [ "`ls -A | grep -i \\.xcworkspace\$`" ]; then filetype_parameter="workspace" && file_to_build="`ls -A | grep -i \\.xcworkspace\$`"; else filetype_parameter="project" && file_to_build="`ls -A | grep -i \\.xcodeproj\$`"; fi
           file_to_build=`echo $file_to_build | awk '{$1=$1;print}'`
           xcodebuild clean build analyze -scheme "$scheme" -"$filetype_parameter" "$file_to_build" | xcpretty && exit ${PIPESTATUS[0]}
-            - name: xcode-build-github-action
-              uses: akiojin/xcode-build-github-action@v1.0
-              with:
-                export-method: development # optional, default is development
-                output-directory: .
-                team-id: PG2KAM3LR7
+      - name: xcode-build-github-action
+        uses: akiojin/xcode-build-github-action@v1.0
+        with:
+          project: iOS/
+          export-method: development # optional, default is development
+          output-directory: .
+          team-id: PG2KAM3LR7
+          
           
